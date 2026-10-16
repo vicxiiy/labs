@@ -98,8 +98,6 @@ second.append(40)
 print("После second.append(40):")
 print("first :", first)
 print("second:", second)
-assert first == [10, 20, 30]
-assert second == [10, 20, 30, 40]
 ```
 #### Результат:
 ```
