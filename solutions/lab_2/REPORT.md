@@ -51,9 +51,24 @@ print(id(first), id(second))
 ```
 #### Дополнение программы:
 #### 1. Переназначили second на новый список с теми же элементами:
-
+```
+second = list(first)
+print("После переназначения second = list(first):")
+print("first :", first, id(first))
+print("second:", second, id(second))
+```
 #### 2. Сравнили списки с помощью == и is:
-
+```
+print("first == second:", first == second)
+print("first is second:", first is second)
+```
 #### 3. Изменили новый список и проверили, повлияло ли это на first:
-
+```
+second.append(40)
+print("После second.append(40):")
+print("first :", first)
+print("second:", second)
+assert first == [10, 20, 30]
+assert second == [10, 20, 30, 40]
+```
 #### 4. Две схемы связей между именами и объектами: до и после переназначения:
