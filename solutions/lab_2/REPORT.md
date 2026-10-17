@@ -267,3 +267,50 @@ assert прошёл: config_3 независима от config_1
 С помощью оператора `is` (`first is second`) или сравнения `id(first) == id(second)`. Оператор `==` для этого не подходит: он сравнивает значения, и разные объекты могут быть равны.
 
 ## Задание 2. Поверхностное и глубокое копирование
+Исходная структура:
+```
+import copy
+
+original = [
+    ["Python", 5],
+    ["Algorithms", 4],
+]
+
+alias = original
+shallow = original.copy()
+deep = copy.deepcopy(original)
+```
+Создаем функцию, которая будет выводить оформленные:
+- содержимое всех четырёх структур;
+- id внешних списков (id(s));
+- id первого вложенного списка (id(s[0]));
+- id объекта с первой оценкой (id(s[0][1])).
+```
+def print_state():
+    structures = [("original", original), ("alias", alias),
+                  ("shallow", shallow), ("deep", deep)]
+
+    print("Содержимое:")
+    for name, s in structures:
+        print(f"  {name:9}{s}")
+
+    print("id внешних списков:")
+    for name, s in structures:
+        print(f"  {name:9}{id(s)}")
+
+    print("id первого вложенного списка (s[0]):")
+    for name, s in structures:
+        print(f"  {name:9}{id(s[0])}")
+
+    print("id объекта с первой оценкой (s[0][1]):")
+    for name, s in structures:
+        print(f"  {name:9}{id(s[0][1])}   значение: {s[0][1]}")
+```
+**Первое изменение:**
+```
+print("=== ПОСЛЕ original.append([\"Databases\", 5]) ===")
+original.append(["Databases", 5])
+print_state()
+```
+**Результат:**
+
