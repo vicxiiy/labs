@@ -267,7 +267,7 @@ assert прошёл: config_3 независима от config_1
 С помощью оператора `is` (`first is second`) или сравнения `id(first) == id(second)`. Оператор `==` для этого не подходит: он сравнивает значения, и разные объекты могут быть равны.
 
 ## Задание 2. Поверхностное и глубокое копирование
-Исходная структура:
+**Исходная структура:**
 ```
 import copy
 
@@ -280,7 +280,7 @@ alias = original
 shallow = original.copy()
 deep = copy.deepcopy(original)
 ```
-Создаем функцию, которая будет выводить:
+**Создаем функцию**, которая будет выводить:
 - содержимое всех четырёх структур;
 - id внешних списков (id(s));
 - id первого вложенного списка (id(s[0]));
@@ -306,11 +306,105 @@ def print_state():
     for name, s in structures:
         print(f"  {name:9}{id(s[0][1])}   значение: {s[0][1]}")
 ```
-**Первое изменение:**
+**Показываем исходное состояние конфигурации:**
 ```
-print("=== ПОСЛЕ original.append([\"Databases\", 5]) ===")
+print("---------- ИСХОДНЫЕ ДАННЫЕ ----------")
+print_state()
+```
+**Результат:**
+```
+---------- ИСХОДНЫЕ ДАННЫЕ ----------
+Содержимое:
+  original [['Python', 5], ['Algorithms', 4]]
+  alias    [['Python', 5], ['Algorithms', 4]]
+  shallow  [['Python', 5], ['Algorithms', 4]]
+  deep     [['Python', 5], ['Algorithms', 4]]
+id внешних списков:
+  original 2557506632064
+  alias    2557506632064
+  shallow  2557504919488
+  deep     2557504545792
+id первого вложенного списка (s[0]):
+  original 2557502813952
+  alias    2557502813952
+  shallow  2557502813952
+  deep     2557506484224
+id объекта с первой оценкой (s[0][1]):
+  original 140734549648632   значение: 5
+  alias    140734549648632   значение: 5
+  shallow  140734549648632   значение: 5
+  deep     140734549648632   значение: 5
+```
+**Первое изменение (append):**
+```
+print("\n---------- ПОСЛЕ original.append([\"Databases\", 5]) ----------")
 original.append(["Databases", 5])
 print_state()
 ```
 **Результат:**
-
+```
+---------- ПОСЛЕ original.append(["Databases", 5]) ----------
+Содержимое:
+  original [['Python', 5], ['Algorithms', 4], ['Databases', 5]]
+  alias    [['Python', 5], ['Algorithms', 4], ['Databases', 5]]
+  shallow  [['Python', 5], ['Algorithms', 4]]
+  deep     [['Python', 5], ['Algorithms', 4]]
+id внешних списков:
+  original 2557506632064
+  alias    2557506632064
+  shallow  2557504919488
+  deep     2557504545792
+id первого вложенного списка (s[0]):
+  original 2557502813952
+  alias    2557502813952
+  shallow  2557502813952
+  deep     2557506484224
+id объекта с первой оценкой (s[0][1]):
+  original 140734549648632   значение: 5
+  alias    140734549648632   значение: 5
+  shallow  140734549648632   значение: 5
+  deep     140734549648632   значение: 5
+```
+**Второе изменение (оценка внутри вложенного списка):**
+```
+print("\n---------- ПОСЛЕ original[0][1] = 3 ----------")
+original[0][1] = 3
+print_state()
+```
+**Результат:**
+```
+---------- ПОСЛЕ original[0][1] = 3 ----------
+Содержимое:
+  original [['Python', 3], ['Algorithms', 4], ['Databases', 5]]
+  alias    [['Python', 3], ['Algorithms', 4], ['Databases', 5]]
+  shallow  [['Python', 3], ['Algorithms', 4]]
+  deep     [['Python', 5], ['Algorithms', 4]]
+id внешних списков:
+  original 2557506632064
+  alias    2557506632064
+  shallow  2557504919488
+  deep     2557504545792
+id первого вложенного списка (s[0]):
+  original 2557502813952
+  alias    2557502813952
+  shallow  2557502813952
+  deep     2557506484224
+id объекта с первой оценкой (s[0][1]):
+  original 140734549648568   значение: 3
+  alias    140734549648568   значение: 3
+  shallow  140734549648568   значение: 3
+  deep     140734549648632   значение: 5
+```
+**Проверка для таблицы наблюдений:**
+```
+for name, s in [("alias", alias), ("shallow", shallow), ("deep", deep)]:
+    new_outer = s is not original
+    new_nested = s[0] is not original[0] and s[1] is not original[1]
+    print(f"{name:8} новый внешний: {new_outer}; новые вложенные: {new_nested}")
+```
+**Результат:**
+```
+alias    новый внешний: False; новые вложенные: False
+shallow  новый внешний: True; новые вложенные: False
+deep     новый внешний: True; новые вложенные: True
+```
