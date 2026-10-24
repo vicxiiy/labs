@@ -547,7 +547,7 @@ print(weak_record())
 ```
 **Вывод:**
 ```
-<__main__.Record object at 0x7f82c8d37230>
+<__main__.Record object at 0x00000200F6A178C0>
 None
 ```
 **Почему слабая ссылка не продлевает время жизни объекта?** 
