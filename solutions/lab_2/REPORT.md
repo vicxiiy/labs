@@ -829,28 +829,28 @@ ten_chars = "abcdefghij"
 number = 12345
 nothing = None
 
-print("Пустой список:", sys.getsizeof(empty_list))
-print("Список из 10 чисел:", sys.getsizeof(ten_list))
-print("Кортеж из 10 чисел:", sys.getsizeof(ten_tuple))
-print("Строка из 10 символов:", sys.getsizeof(ten_chars))
-print("Целое число:", sys.getsizeof(number))
-print("None:", sys.getsizeof(nothing))
+print("Пустой список:", sys.getsizeof(empty_list), "байт")
+print("Список из 10 чисел:", sys.getsizeof(ten_list), "байт")
+print("Кортеж из 10 чисел:", sys.getsizeof(ten_tuple), "байт")
+print("Строка из 10 символов:", sys.getsizeof(ten_chars), "байт")
+print("Целое число:", sys.getsizeof(number), "байт")
+print("None:", sys.getsizeof(nothing), "байт")
 
-print("Размер одного элемента списка (число 5):", sys.getsizeof(ten_list[4]))
-print("Сумма размеров 10 чисел:", sum(sys.getsizeof(x) for x in ten_list))
-print("Список + числа:", sys.getsizeof(ten_list) + sum(sys.getsizeof(x) for x in ten_list))
+print("Размер одного элемента списка:", sys.getsizeof(ten_list[4]), "байт")
+print("Сумма размеров 10 чисел:", sum(sys.getsizeof(x) for x in ten_list), "байт")
+print("Список + числа:", sys.getsizeof(ten_list) + sum(sys.getsizeof(x) for x in ten_list), "байт")
 ```
 **Вывод:**
 ```
-Пустой список: 56
-Список из 10 чисел: 136
-Кортеж из 10 чисел: 128
-Строка из 10 символов: 51
-Целое число: 28
-None: 16
-Размер одного элемента списка (число 5): 28
-Сумма размеров 10 чисел: 280
-Список + числа: 416
+Пустой список: 56 байт
+Список из 10 чисел: 136 байт
+Кортеж из 10 чисел: 128 байт
+Строка из 10 символов: 51 байт
+Целое число: 28 байт
+None: 16 байт
+Размер одного элемента списка: 28 байт
+Сумма размеров 10 чисел: 280 байт
+Список + числа: 416 байт
 ```
 **Почему размер контейнера не включает все объекты, на которые он ссылается?**
 
