@@ -956,14 +956,12 @@ range(100_000), 1000 объектов:
 ```
 from array import array
 
-
 def peak_of(factory):
     tracemalloc.start()
     result = factory()
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     return peak
-
 
 print(f"list(range(100_000)):           {peak_of(lambda: list(range(100_000))) / 1024:.2f} КБ")
 print(f"array('i', range(100_000)):     {peak_of(lambda: array('i', range(100_000))) / 1024:.2f} КБ")
@@ -979,7 +977,7 @@ print("Кортеж из 10:                         ", sys.getsizeof((0, 1, 2, 
 ```
 **Вывод:**
 ```
-list(range(100_000)):           3895.24 КБ
+list(range(100_000)):           3895.18 КБ
 array('i', range(100_000)):     398.79 КБ
 sum(range(100_000)):            0.03 КБ
 sum(x for x in range(100_000)): 0.36 КБ
