@@ -896,7 +896,6 @@ len= 93  size=920
 ```
 COUNT = 1000
 
-# Через list(range(100_000)):
 tracemalloc.start()
 numbers = list(range(100_000))
 current, peak = tracemalloc.get_traced_memory()
