@@ -84,20 +84,17 @@ def collect_results():
 def kilobytes(value):
     return f"{value / 1024:.2f}"
 
-
 def format_object_sizes(sizes):
     lines = ["1. Размеры отдельных объектов (sys.getsizeof)"]
     for item in sizes:
         lines.append(f"   {item['name']:<24}{item['size']:>6} байт")
     return lines
 
-
 def format_list_growth(changes):
-    lines = ["2. Рост списка (показаны только изменения размера)"]
+    lines = ["2. Рост списка"]
     for item in changes:
         lines.append(f"   длина {item['length']:>3}   размер {item['size']:>4} байт")
     return lines
-
 
 def format_scenarios(scenarios, ratio):
     lines = ["3. Сравнение сценариев (tracemalloc)"]
@@ -109,20 +106,18 @@ def format_scenarios(scenarios, ratio):
             f"   {s['name']:<16}{s['elements']:>10}{s['copies']:>10}"
             f"{s['outer_size']:>15}{kilobytes(s['current']):>13}{kilobytes(s['peak']):>13}"
         )
-    lines.append("   Значения памяти даны на один объект (для range среднее по "
-                 "нескольким объектам).")
+    lines.append("   Значения памяти даны на один объект.")
 
     first, second = scenarios
     lines.append("")
     lines.append(f"   Пик {second['name']} на один объект: {second['peak']:.1f} байт")
     if ratio is None:
-        lines.append("   Отношение пиков: не определено (пик второго сценария равен 0)")
+        lines.append("   Отношение пиков: не определено.")
     else:
         lines.append(
             f"   Отношение пиков ({first['name']} / {second['name']}): {ratio:.0f}"
         )
     return lines
-
 
 def format_report(results):
     lines = ["ОТЧЁТ О ПОТРЕБЛЕНИИ ПАМЯТИ", "-" * 72, ""]
@@ -133,12 +128,10 @@ def format_report(results):
     lines += format_scenarios(results["scenarios"], results["peak_ratio"])
     return "\n".join(lines)
 
-
 # ------------------------------ ЗАПУСК ------------------------------
 def main():
     results = collect_results()
     print(format_report(results))
-
 
 if __name__ == "__main__":
     main()
