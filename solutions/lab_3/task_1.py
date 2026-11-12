@@ -1,1 +1,123 @@
+LEVELS = ("недостаточный", "удовлетворительный", "хороший", "отличный")
 
+# Часть 1. Проверка диапазонов
+def validate(score: int, absences: int) -> str | None:
+    if score < 0 or score > 100:
+        return f"результат {score} вне диапазона 0–100"
+    elif absences < 0 or absences > 5:
+        return f"пропусков {absences} вне диапазона 0–5"
+    else:
+        return None
+
+# Часть 2. Определение уровня результата
+def get_level(score: int, absences: int) -> str:
+    if score >= 90:
+        index = 3
+    elif score >= 75:
+        index = 2
+    elif score >= 60:
+        index = 1
+    else: 
+        index = 0
+
+    if absences > 3 and index > 0:  
+        index -= 1
+    return LEVELS[index]
+
+# Часть 3. Сопоставление с образцом
+def describe_work(work_type: str) -> str:
+    match work_type:
+        case "exam":
+            return "экзаменационная работа"
+        case "project":
+            return "проектная работа"
+        case "practice":
+            return "практическая работа"
+        case _:
+            return "неизвестный тип работы"
+
+def process_record(score: int, work_type: str, absences: int) -> tuple[str, str | None]:
+    error = validate(score, absences)
+    if error is not None:
+        return f"Ошибка: {error}", None
+
+    level = get_level(score, absences)
+    work = describe_work(work_type)
+    text = f"{work}: результат {score}, пропусков {absences}, уровень — {level}"
+    return text, level
+
+def run_single() -> None:
+    score = int(input("Результат (0–100): "))
+    work_type = input("Тип работы (exam / project / practice): ").strip()
+    absences = int(input("Пропусков (0–5): "))
+    print(process_record(score, work_type, absences)[0])
+
+# Часть 4. Тестовые сценарии: (score, work_type, absences, ожидаемый уровень)
+TEST_SCENARIOS = [
+    (0, "exam", 0, "недостаточный"),
+    (59, "project", 1, "недостаточный"),
+    (60, "practice", 0, "удовлетворительный"),
+    (74, "exam", 3, "удовлетворительный"),
+    (75, "project", 0, "хороший"),
+    (89, "practice", 4, "удовлетворительный"),
+    (90, "exam", 0, "отличный"),
+    (100, "exam", 5, "хороший"),
+    (60, "exam", 5, "недостаточный"),
+    (50, "practice", 5, "недостаточный"),
+    (70, "lab", 1, "удовлетворительный"),
+    (101, "exam", 0, None),
+    (80, "exam", 6, None),
+    (-1, "project", -1, None),
+]
+
+def run_tests() -> None:
+    print("\n=== Тестовые сценарии ===")
+    all_ok = True
+    for number, (score, work_type, absences, expected) in enumerate(TEST_SCENARIOS, 1):
+        text, level = process_record(score, work_type, absences)
+        ok = level == expected
+        all_ok = all_ok and ok
+        exp_str = expected if expected else "ошибка"
+        act_str = level if level else "ошибка"
+        print(f"{number:2}. ({score}, {work_type}, {absences}) | "
+              f"ожидание: {exp_str} | факт: {act_str} | {'OK' if ok else 'FAIL'}")
+        print(f"    {text}")
+    assert all_ok, "Есть непройденные тестовые сценарии"
+    print("Все сценарии пройдены.")
+
+# Практическое расширение
+RECORDS = [
+    (95, "exam", 0),
+    (82, "project", 2),
+    (67, "practice", 1),
+    (45, "exam", 4),
+    (91, "project", 5),
+    (75, "practice", 3),
+    (59, "exam", 0),
+    (100, "practice", 1),
+    (60, "project", 4),
+    (88, "exam", 4),
+]
+
+def run_group(records: list[tuple[int, str, int]]) -> None:
+    summary = {level: 0 for level in LEVELS}
+
+    print("\n=== Индивидуальные результаты ===")
+    for number, (score, work_type, absences) in enumerate(records, 1):
+        text, level = process_record(score, work_type, absences)
+        print(f"{number:2}. {text}")
+        if level is not None:
+            summary[level] += 1
+
+    print("\n=== Сводка по уровням ===")
+    for level in LEVELS:
+        print(f"{level}: {summary[level]}")
+
+def main() -> None:
+    run_tests()
+    run_group(RECORDS)
+    print("\n=== Ввод одной записи ===")
+    run_single()
+
+if __name__ == "__main__":
+    main()
